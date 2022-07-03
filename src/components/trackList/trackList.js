@@ -1,35 +1,65 @@
 import React from 'react';
 import './trackList.css';
 import Track from '../track/track';
+import AudioContentButton from '../audioContentButton/audioContentButton';
 
+const elements = [];
 
 class TrackList extends React.Component {
-    render() {
-
-        let trackList;
-
-        if (this.props.isRemoval) {    
-            trackList = this.props.tracks.map(track => {
-              return <Track 
-              key={track.id} 
-              track={track}              
-              onRemove={this.props.onRemove} 
-              isRemoval={this.props.isRemoval} /> 
-            })
+    constructor(props) {
+        super(props);
     
-        } else {
-            trackList = this.props.tracks.map(track => {
-                return <Track 
-                key={track.id} 
-                track={track}
-                onAdd={this.props.onAdd}               
-                isRemoval={this.props.isRemoval} /> 
-            })  
+        this.state = {
+          activeElement: null,
+          allElements: elements
+        };
+        this.toggleIndex = this.toggleIndex.bind(this);
+    }
 
+    toggleIndex(index) {        
+        let audio = document.getElementById(index);
+        let allAudios = document.querySelectorAll('audio');
+        audio.volume = 0.1;
+
+        if(this.state.activeElement === index) {
+            this.setState({ activeElement: null });
+            audio.pause();
         }
+        else {
+            this.setState({ activeElement: index });
+            allAudios.forEach(function(audio){
+                audio.pause();
+            });
+            audio.play();
+        }
+    }
+
+    render() {
         return (
             <div className="TrackList">
-                { trackList }
+                {
+                    this.props.tracks.map((track, index) => {
+                        elements.push(index)
+                        return  (
+                            <div key={index}>
+                                <AudioContentButton
+                                    allElements={this.state.allElements}
+                                    activeElement={this.state.activeElement}
+                                    toggleIndex={this.toggleIndex}
+                                    preview={track.preview}
+                                    index={index}
+                                />
+                                <Track
+                                    track={track}
+                                    key={track.id}
+                                    onAdd={this.props.onAdd}
+                                    onRemove={this.props.onRemove}
+                                    isRemoval={this.props.isRemoval}
+                                />
+                            </div>
+                        )                
+                    })
+                }
             </div>
         )
     }

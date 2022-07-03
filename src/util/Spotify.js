@@ -1,5 +1,5 @@
 const clientId = '85d0507ae13347009c1f663370bdacd6';
-const redirectUri = 'http://localhost:3000/';
+const redirectUri = 'http:playlistJamz.surge.sh';
 
 let accessToken;
 
@@ -43,7 +43,8 @@ const Spotify = {
                     name: track.name,
                     artist: track.artists[0].name,
                     album: track.album.name,
-                    uri: track.uri
+                    uri: track.uri,
+                    preview: track.preview_url
             }));
         })
     },

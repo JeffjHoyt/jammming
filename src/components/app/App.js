@@ -6,6 +6,12 @@ import SearchResults from '../searchResults/searchResults';
 import PlayList from '../Playlist/playList';
 import Spotify from '../../util/Spotify';
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fab }  from '@fortawesome/free-brands-svg-icons';
+import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
+
+library.add(fab, faPlay, faPause);
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -45,6 +51,7 @@ class App extends React.Component {
       this.setState({ playlistName: name});
     }
 
+
     savePlaylist() {
       const trackUris = this.state.playlistTracks.map(track => track.uri);
       Spotify.savePlaylist(this.state.playlistName, trackUris).then(() => {
@@ -53,12 +60,17 @@ class App extends React.Component {
           playlistTracks: []
         })
       })
+      alert('Playlist successfully saved to your Spotify account')
     }
 
     search(term) {
        Spotify.search(term).then(searchResults => {
          this.setState({searchResults: searchResults})
        })
+    }
+
+    componentDidMount() {
+      window.addEventListener('load', Spotify.search(''));
     }
 
 
