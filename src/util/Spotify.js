@@ -1,5 +1,5 @@
 const clientId = '85d0507ae13347009c1f663370bdacd6';
-const redirectUri = 'http:playlistJamz.surge.sh';
+const redirectUri = 'https://jeffjhoyt.github.io/jammming/';
 
 let accessToken;
 
